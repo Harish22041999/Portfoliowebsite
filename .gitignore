@@ -15,7 +15,12 @@
 
 # misc
 .DS_Store
+# credentials and sensitive files
+*recovery-codes*
 *.pem
+*.key
+.env*
+!.env.example
 
 # debug
 npm-debug.log*
