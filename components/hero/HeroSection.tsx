@@ -6,17 +6,52 @@ import dynamic from 'next/dynamic';
 import { ArrowDown, ArrowUpRight, Award, Compass, ShieldCheck } from 'lucide-react';
 import { personalData } from '@/data/personal';
 
+function EarthLoadingBar() {
+  const [percent, setPercent] = React.useState(18);
+
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setPercent((prev) => {
+        if (prev >= 98) {
+          clearInterval(timer);
+          return 98;
+        }
+        return prev + Math.floor(Math.random() * 8) + 4;
+      });
+    }, 60);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div className="w-full h-[450px] sm:h-[550px] lg:h-full lg:min-h-[720px] flex items-center justify-center p-4">
+      <div className="w-72 max-w-[85vw] p-6 rounded-2xl border border-[#292D35] bg-[#101217]/80 backdrop-blur-sm space-y-3.5 shadow-2xl">
+        <div className="flex items-center justify-between text-xs font-mono">
+          <span className="text-[#86868B] uppercase tracking-wider text-[11px]">Loading 3D Earth</span>
+          <span className="text-[#57C7F7] font-bold">{percent}%</span>
+        </div>
+        
+        {/* Progress Bar */}
+        <div className="w-full h-1.5 bg-[#181B22] rounded-full overflow-hidden border border-[#292D35]">
+          <div
+            className="h-full bg-gradient-to-r from-[#0071E3] to-[#57C7F7] rounded-full transition-all duration-100 ease-out shadow-[0_0_10px_rgba(87,199,247,0.6)]"
+            style={{ width: `${percent}%` }}
+          />
+        </div>
+
+        <div className="text-[10px] font-mono text-gray-500 flex justify-between">
+          <span>INITIALIZING SPATIAL TWIN</span>
+          <span>NASA VISIBLE EARTH</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const RealisticEarth = dynamic(
   () => import('./RealisticEarth').then((mod) => mod.RealisticEarth),
   {
     ssr: false,
-    loading: () => (
-      <div className="w-full h-[450px] sm:h-[550px] lg:h-full lg:min-h-[720px] flex items-center justify-center">
-        <div className="w-72 h-72 rounded-full border border-[#292D35] animate-pulse bg-gradient-to-tr from-cyan-950/20 to-blue-900/10 flex items-center justify-center">
-          <span className="font-mono text-xs tracking-wider text-[#57C7F7]">LOADING 3D EARTH</span>
-        </div>
-      </div>
-    ),
+    loading: () => <EarthLoadingBar />,
   }
 );
 
