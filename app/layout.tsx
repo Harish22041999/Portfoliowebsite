@@ -3,6 +3,7 @@ import './globals.css';
 import { Navbar } from '@/components/navigation/Navbar';
 import { Footer } from '@/components/footer/Footer';
 import { personalData } from '@/data/personal';
+import { Analytics } from '@vercel/analytics/next';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://drharish-geospatial.dev'),
@@ -116,6 +117,7 @@ export default function RootLayout({
         <Navbar />
         <main className="flex-grow">{children}</main>
         <Footer />
+        <Analytics />
       </body>
     </html>
   );
